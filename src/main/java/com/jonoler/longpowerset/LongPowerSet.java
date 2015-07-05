@@ -87,13 +87,14 @@ public class LongPowerSet {
     ConsecutiveLongMaskSetIterator(Map<E, Integer> elementPositions, E[] elementArray) {
       this.elementPositions = elementPositions;
       this.elementArray = elementArray;
+      // handle the case of 63 bits in a special way to avoid overflow with the bit shift operation...
       finalPowerSetElementMask = elementArray.length == LongPowerSetImpl.MAX_ELEMENTS ?
-          Long.MAX_VALUE : 1l << elementArray.length;
+          Long.MAX_VALUE : (1l << elementArray.length) - 1;
     }
 
     @Override
     public boolean hasNext() {
-      return currentPowerSetElementMask < finalPowerSetElementMask;
+      return currentPowerSetElementMask <= finalPowerSetElementMask;
     }
 
     @Override
