@@ -46,6 +46,9 @@ public class LongPowerSet {
 
     @Override
     public long longSize() {
+      if (elementArray.length >= MAX_ELEMENTS) {
+        throw new ArithmeticException("Size of power set of " + elementArray.length + " elements exceeds MAX_LONG");
+      }
       return 1l << elementArray.length;
     }
 
