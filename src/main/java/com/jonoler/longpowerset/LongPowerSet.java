@@ -19,6 +19,7 @@ public class LongPowerSet {
 
     private Map<E, Integer> elementPositions;
     private E[] elementArray;
+    private Iterator<Set<E>> elementIterator;
 
     LongPowerSetImpl(Set<E> elements) {
       if (elements.size() > MAX_ELEMENTS) {
@@ -36,7 +37,10 @@ public class LongPowerSet {
 
     @Override
     public Iterator<Set<E>> iterator() {
-      return new ConsecutiveLongMaskSetIterator<>(elementPositions, elementArray);
+    	if (elementIterator == null) {
+    		elementIterator = new ConsecutiveLongMaskSetIterator<>(elementPositions, elementArray);
+    	}
+    	return elementIterator;
     }
 
     @Override
