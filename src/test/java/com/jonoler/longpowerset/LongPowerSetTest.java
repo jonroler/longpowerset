@@ -52,9 +52,15 @@ public class LongPowerSetTest {
     LongSet<Set<String>> powerSet = LongPowerSet.create(new HashSet<>(Arrays.asList("a", "b", "c")));
     assertEquals("expect 8 subsets in the power set of a 3 element set", 8, powerSet.longSize());
     Set<Set<String>> constructedSet = new HashSet<>();
-    for (Set<String> subset : powerSet) {
+//    for (Set<String> subset : powerSet) {
+//      constructedSet.add(subset);
+//    }
+    while (powerSet.iterator().hasNext()) {
+      Set<String> subset = powerSet.iterator().next();
       constructedSet.add(subset);
+      System.out.println("added " + subset.toString());
     }
+
     Set<String> emptySet = Collections.emptySet();
     Set<String> singleElementSet1 = Collections.singleton("a");
     Set<String> singleElementSet2 = Collections.singleton("b");
