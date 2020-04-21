@@ -1,42 +1,40 @@
 package com.jonoler.longpowerset;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class LongPowerSetTest {
   @Test
   public void testEmptyPowerSetHasOneEmptySubset() {
     LongSet<Set<String>> powerSet = LongPowerSet.create(new HashSet<>());
-    assertEquals("expect one empty subset in the power set of the empty set", 1, powerSet.longSize());
-    assertFalse("expect power set of the empty set to be non-empty", powerSet.isEmpty());
-    assertEquals("expect one empty subset in the power set of the empty set", 0, powerSet.iterator().next().size());
-    assertTrue("expect power set of the empty set contains the empty set", powerSet.contains(Collections.emptySet()));
-    assertEquals("expect empty power sets to be equal", LongPowerSet.create(new HashSet<>()), powerSet);
+    assertEquals(1, powerSet.longSize(), "expect one empty subset in the power set of the empty set");
+    assertFalse(powerSet.isEmpty(), "expect power set of the empty set to be non-empty");
+    assertEquals(0, powerSet.iterator().next().size(), "expect one empty subset in the power set of the empty set");
+    assertTrue(powerSet.contains(Collections.emptySet()), "expect power set of the empty set contains the empty set");
+    assertEquals(LongPowerSet.create(new HashSet<>()), powerSet, "expect empty power sets to be equal");
     Set<Set<String>> constructedSet = new HashSet<>();
     for (Set<String> subset : powerSet) {
       constructedSet.add(subset);
     }
     Set<String> emptySet = Collections.emptySet();
     Set<Set<String>> expectedSet = new HashSet<>(Arrays.asList(emptySet));
-    assertEquals("expect iterated contents of power set to be correct", expectedSet, constructedSet);
+    assertEquals(expectedSet, constructedSet, "expect iterated contents of power set to be correct");
   }
 
   @Test
   public void testPowerSetOfSingleElementHasCorrectSubsets() {
     LongSet<Set<String>> powerSet = LongPowerSet.create(new HashSet<>(Arrays.asList("a")));
-    assertEquals("expect one empty subset and one one element subset in the power set of a single element set", 2, powerSet.longSize());
-    assertTrue("expect empty subset to be contained in power set of single element set", powerSet.contains(Collections.emptySet()));
-    assertTrue("expect single element subset to be contained in power set of single element set",
-        powerSet.contains(new HashSet<>(Arrays.asList("a"))));
+    assertEquals(2, powerSet.longSize(), "expect one empty subset and one one element subset in the power set of a single element set");
+    assertTrue(powerSet.contains(Collections.emptySet()), "expect empty subset to be contained in power set of single element set");
+    assertTrue(powerSet.contains(new HashSet<>(Arrays.asList("a"))),
+        "expect single element subset to be contained in power set of single element set");
     Set<Set<String>> constructedSet = new HashSet<>();
     for (Set<String> subset : powerSet) {
       constructedSet.add(subset);
@@ -44,13 +42,13 @@ public class LongPowerSetTest {
     Set<String> emptySet = Collections.emptySet();
     Set<String> singleElementSet = Collections.singleton("a");
     Set<Set<String>> expectedSet = new HashSet<>(Arrays.asList(emptySet, singleElementSet));
-    assertEquals("expect iterated contents of power set to be correct", expectedSet, constructedSet);
+    assertEquals(expectedSet, constructedSet, "expect iterated contents of power set to be correct");
   }
 
   @Test
   public void testPowerSetOfThreeElementsHasCorrectSubsets() {
     LongSet<Set<String>> powerSet = LongPowerSet.create(new HashSet<>(Arrays.asList("a", "b", "c")));
-    assertEquals("expect 8 subsets in the power set of a 3 element set", 8, powerSet.longSize());
+    assertEquals(8, powerSet.longSize(), "expect 8 subsets in the power set of a 3 element set");
     Set<Set<String>> constructedSet = new HashSet<>();
     for (Set<String> subset : powerSet) {
       constructedSet.add(subset);
@@ -65,7 +63,7 @@ public class LongPowerSetTest {
     Set<String> threeElementSet = new HashSet<>(Arrays.asList("a", "b", "c"));
     Set<Set<String>> expectedSet = new HashSet<>(Arrays.asList(emptySet, singleElementSet1, singleElementSet2,
         singleElementSet3, twoElementSet1, twoElementSet2, twoElementSet3, threeElementSet));
-    assertEquals("expect iterated contents of power set to be correct", expectedSet, constructedSet);
-    assertTrue("expect power set to contain correct subsets", powerSet.containsAll(expectedSet));
+    assertEquals(expectedSet, constructedSet, "expect iterated contents of power set to be correct");
+    assertTrue(powerSet.containsAll(expectedSet), "expect power set to contain correct subsets");
   }
 }
