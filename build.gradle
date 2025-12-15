@@ -1,11 +1,17 @@
-group 'com.jonoler.longpowerset'
-version '1.0'
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'signing'
+}
 
-apply plugin: 'java'
+group = 'io.github.jonroler'
+version = '1.0.0'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+    withJavadocJar()
+    withSourcesJar()
 }
 
 repositories {
@@ -19,4 +25,56 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            pom {
+                name = 'LongPowerSet'
+                description = 'A Java library for working with power sets that can handle sets with up to 62 elements'
+                url = 'https://github.com/jonroler/longpowerset'
+
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://opensource.org/licenses/MIT'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'jonroler'
+                        name = 'Jon Oler'
+                        email = 'jonroler@gmail.com'
+                    }
+                }
+
+                scm {
+                    connection = 'scm:git:git://github.com/jonroler/longpowerset.git'
+                    developerConnection = 'scm:git:ssh://github.com:jonroler/longpowerset.git'
+                    url = 'https://github.com/jonroler/longpowerset'
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = 'staging'
+            url = layout.buildDirectory.dir('staging-deploy')
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+}
+
+javadoc {
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
 }
